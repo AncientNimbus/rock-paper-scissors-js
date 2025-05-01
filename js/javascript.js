@@ -15,8 +15,6 @@
  */
 
 const rps = ["rock", "paper", "scissors"];
-let humanScore = 0;
-let computerScore = 0;
 
 /**
  * Get computer's choice
@@ -48,13 +46,74 @@ function getHumanChoice(data) {
   }
 }
 
-// TODO: Store user's score
+/**
+ * Play a single round
+ * @param {string} humanChoice
+ * @param {string} computerChoice
+ * @returns {*}
+ */
+function playRound(humanChoice, computerChoice) {
+  let userWon = false;
 
-// TODO: Play a single round
+  switch (humanChoice) {
+    case computerChoice:
+      // console.log("It is a tie!");
+      return;
+    case rps[0]:
+      userWon = computerChoice === rps[2];
+      break;
+    case rps[1]:
+      userWon = computerChoice === rps[0];
+      break;
+    case rps[2]:
+      userWon = computerChoice === rps[1];
+      break;
+    default:
+      console.log("Invalid choice");
+      return;
+  }
 
-// TODO: Play the entire game (5 rounds)
+  return userWon;
+}
 
-const computerChoice = getComputerChoice(rps);
-const humanChoice = getHumanChoice(rps);
-// console.log(computerChoice);
-console.log(humanChoice);
+/**
+ *
+ * @param {number} humanScore
+ * @param {number} computerScore
+ */
+function printScore(humanScore, computerScore) {
+  let msg;
+  // console.log("computer: " + computerScore);
+  // console.log("player: " + humanScore);
+  if (humanScore !== computerScore) {
+    msg = humanScore > computerScore ? "You won" : "You lost";
+  } else {
+    msg = "It is a tie";
+  }
+  console.log(msg);
+}
+
+/**
+ *
+ * @param {number} round
+ */
+function playGame(round) {
+  let humanScore = 0;
+  let computerScore = 0;
+  for (let index = 0; index < round; index++) {
+    const computerChoice = getComputerChoice(rps);
+    const humanChoice = getHumanChoice(rps);
+    console.log(
+      `Round ${
+        index + 1
+      }: You've chose ${humanChoice} and the computer have chose ${computerChoice}`
+    );
+    let result = playRound(humanChoice, computerChoice);
+    if (result !== undefined) {
+      result ? humanScore++ : computerScore++;
+    }
+  }
+  printScore(humanScore, computerScore);
+}
+
+playGame(5);
