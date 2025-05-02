@@ -7,4 +7,5 @@ My JavaScript refresher project. More info can be found [here](https://www.theod
 ## Project Scope
 
 V1.0: The game can only be played inside the console. 
+
 V1.1: The game is now playable on the website.
