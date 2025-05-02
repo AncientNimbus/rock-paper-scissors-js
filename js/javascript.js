@@ -14,7 +14,10 @@
  * 11. The first to reach 5 points win the game
  */
 
-const rps = ["rock", "paper", "scissors"];
+/**
+ * @type {["rock", "paper", "scissors"]}
+ */
+const [r, p, s] = ["rock", "paper", "scissors"];
 
 /**
  * Get computer's choice
@@ -59,14 +62,14 @@ function playRound(humanChoice, computerChoice) {
     case computerChoice:
       // console.log("It is a tie!");
       return;
-    case rps[0]:
-      userWon = computerChoice === rps[2];
+    case r:
+      userWon = computerChoice === s;
       break;
-    case rps[1]:
-      userWon = computerChoice === rps[0];
+    case p:
+      userWon = computerChoice === r;
       break;
-    case rps[2]:
-      userWon = computerChoice === rps[1];
+    case s:
+      userWon = computerChoice === p;
       break;
     default:
       console.log("Invalid choice");
@@ -83,8 +86,6 @@ function playRound(humanChoice, computerChoice) {
  */
 function printScore(humanScore, computerScore) {
   let msg;
-  // console.log("computer: " + computerScore);
-  // console.log("player: " + humanScore);
   if (humanScore !== computerScore) {
     msg = humanScore > computerScore ? "You won" : "You lost";
   } else {
@@ -101,8 +102,8 @@ function playGame(round) {
   let humanScore = 0;
   let computerScore = 0;
   for (let index = 0; index < round; index++) {
-    const computerChoice = getComputerChoice(rps);
-    const humanChoice = getHumanChoice(rps);
+    const computerChoice = getComputerChoice([r, p, s]);
+    const humanChoice = getHumanChoice([r, p, s]);
     console.log(
       `Round ${
         index + 1
@@ -115,5 +116,20 @@ function playGame(round) {
   }
   printScore(humanScore, computerScore);
 }
+
+/** @type {[HTMLButtonElement, HTMLButtonElement, HTMLButtonElement]} */
+const [rBtn, pBtn, sBtn] = document.querySelectorAll(".controls button");
+
+rBtn.addEventListener("click", () => {
+  console.log("Clicked Rock");
+});
+
+pBtn.addEventListener("click", () => {
+  console.log("Clicked Paper");
+});
+
+sBtn.addEventListener("click", () => {
+  console.log("Clicked Scissors");
+});
 
 // playGame(5);

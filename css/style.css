@@ -1,0 +1,10 @@
+.rps-game {
+  margin: 55px;
+  border: solid black;
+  display: flex;
+  justify-content: center;
+}
+
+.controls {
+  padding: 34px 0;
+}
