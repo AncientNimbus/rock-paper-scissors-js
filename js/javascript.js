@@ -1,23 +1,10 @@
-// Rock Paper Scissors v1.0 Console Edition
-/**
- * Program Flow
- * 1. Create an array that contain 3 string value: rock, paper and scissors
- * 2. Create a function that randomly pick a value from the array
- * 3. This value will be stored as computer's choice
- * 4. Create a prompt that will collect user's choice
- * 5. Check user's choice against the array to ensure the option is valid
- * 6. Initialized user's score and computer's score
- * 7. Compare computer's choice against user's choice
- * 8. If user win, add a point to the user
- * 9. If user lose, add a point to the computer
- * 10. If it is a tie, restart the round
- * 11. The first to reach 5 points win the game
- */
+// Rock Paper Scissors v1.1 Browser Edition
 
 /**
  * @type {["rock", "paper", "scissors"]}
  */
 const [r, p, s] = ["rock", "paper", "scissors"];
+const choices = [r, p, s];
 
 /**
  * Get computer's choice
@@ -26,27 +13,6 @@ const [r, p, s] = ["rock", "paper", "scissors"];
  */
 function getComputerChoice(data) {
   return data[Math.floor(Math.random() * data.length)];
-}
-
-/**
- * Get user's choice
- * @param {string[]} data
- * @returns {string}
- */
-function getHumanChoice(data) {
-  let humanChoice = prompt("Rock, Paper, Scissors?", getComputerChoice(data));
-
-  if (humanChoice == null) {
-    // Re-prompt if the prompt is empty
-    return getHumanChoice(data);
-  } else {
-    humanChoice = humanChoice.toLowerCase();
-    // Re-prompt if the prompt response is incorrect
-    humanChoice =
-      data.indexOf(humanChoice) >= 0 ? humanChoice : getHumanChoice(data);
-
-    return humanChoice;
-  }
 }
 
 /**
@@ -60,76 +26,98 @@ function playRound(humanChoice, computerChoice) {
 
   switch (humanChoice) {
     case computerChoice:
-      // console.log("It is a tie!");
-      return;
+      round.textContent++;
+      return "tie"; // A tie!
     case r:
       userWon = computerChoice === s;
+      round.textContent++;
       break;
     case p:
       userWon = computerChoice === r;
+      round.textContent++;
       break;
     case s:
       userWon = computerChoice === p;
+      round.textContent++;
       break;
     default:
       console.log("Invalid choice");
       return;
   }
-
   return userWon;
 }
 
-/**
- *
- * @param {number} humanScore
- * @param {number} computerScore
- */
-function printScore(humanScore, computerScore) {
-  let msg;
-  if (humanScore !== computerScore) {
-    msg = humanScore > computerScore ? "You won" : "You lost";
-  } else {
-    msg = "It is a tie";
-  }
-  console.log(msg);
+// Get elements from the html page
+const controls = document.querySelector(".controls");
+const winElem = document.querySelector("#win-pt");
+const roundList = document.querySelector(".rounds ol");
+let round = document.querySelector("#current-round");
+let humanScore = document.querySelector("#human-score");
+let computerScore = document.querySelector("#computer-score");
+
+function initGame(winPt) {
+  // Set the points required to win the game
+  winElem.textContent = winPt;
+  // Copy the variable data to the page
+  round.textContent = 0;
+  humanScore.textContent = 0;
+  computerScore.textContent = 0;
 }
 
-/**
- *
- * @param {number} round
- */
-function playGame(round) {
-  let humanScore = 0;
-  let computerScore = 0;
-  for (let index = 0; index < round; index++) {
-    const computerChoice = getComputerChoice([r, p, s]);
-    const humanChoice = getHumanChoice([r, p, s]);
-    console.log(
-      `Round ${
-        index + 1
-      }: You've chose ${humanChoice} and the computer have chose ${computerChoice}`
-    );
-    let result = playRound(humanChoice, computerChoice);
-    if (result !== undefined) {
-      result ? humanScore++ : computerScore++;
+function validateResult(result) {
+  if (typeof result === "boolean") {
+    if (result) {
+      humanScore.textContent++;
+      return "win";
+    } else {
+      computerScore.textContent++;
+      return "lose";
     }
+  } else if (result === "tie") {
+    return "tie";
   }
-  printScore(humanScore, computerScore);
 }
 
-/** @type {[HTMLButtonElement, HTMLButtonElement, HTMLButtonElement]} */
-const [rBtn, pBtn, sBtn] = document.querySelectorAll(".controls button");
+function createRoundRecord(result, humanChoice, computerChoice) {
+  const messages = {
+    win: "You won this round.",
+    lose: "Computer won this round.",
+    tie: "It is a tie, no point is added.",
+  };
+  const record = document.createElement("li");
 
-rBtn.addEventListener("click", () => {
-  console.log("Clicked Rock");
+  record.textContent = `You draw ${humanChoice} and the Computer draws ${computerChoice}. ${messages[result]}`;
+
+  roundList.appendChild(record);
+}
+
+controls.addEventListener("click", (e) => {
+  let target = e.target;
+  const computerChoice = getComputerChoice(choices);
+  let humanChoice;
+  let result;
+
+  switch (target.id) {
+    case r:
+      humanChoice = r;
+      break;
+    case p:
+      humanChoice = p;
+      break;
+    case s:
+      humanChoice = s;
+      break;
+  }
+
+  if (humanScore.textContent == winPt || computerScore.textContent == winPt) {
+    const buttons = controls.querySelectorAll(".action-btn");
+    buttons.forEach((btn) => (btn.disabled = true));
+    controls.disabled = true;
+  } else if (target.matches(".action-btn")) {
+    result = playRound(humanChoice, computerChoice);
+    createRoundRecord(validateResult(result), humanChoice, computerChoice);
+  }
 });
 
-pBtn.addEventListener("click", () => {
-  console.log("Clicked Paper");
-});
-
-sBtn.addEventListener("click", () => {
-  console.log("Clicked Scissors");
-});
-
-// playGame(5);
+const winPt = 5;
+initGame(winPt);

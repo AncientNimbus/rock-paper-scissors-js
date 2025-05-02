@@ -1,10 +1,31 @@
 .rps-game {
-  margin: 55px;
-  border: solid black;
+  margin: 34px;
+  border: solid rgb(0, 0, 0);
   display: flex;
+  align-items: start;
+  flex-direction: column;
   justify-content: center;
 }
 
+h1 {
+  align-self: center;
+}
+
+.controls,
+.scores,
+.rounds {
+  padding-left: 21px;
+}
+
 .controls {
-  padding: 34px 0;
+  align-self: center;
+  padding: 21px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2em;
+}
+
+.scores p {
+  padding-left: 30px;
 }

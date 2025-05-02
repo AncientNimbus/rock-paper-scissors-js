@@ -10,10 +10,22 @@
   </head>
   <body>
     <section class="rps-game">
+      <h1>Rock Paper Scissors</h1>
       <div class="controls">
-        <button>Rock</button>
-        <button>Paper</button>
-        <button>Scissors</button>
+        <button class="action-btn" id="rock">Rock</button>
+        <button class="action-btn" id="paper">Paper</button>
+        <button class="action-btn" id="scissors">Scissors</button>
+      </div>
+      <div class="scores">
+        <h2>Score Results</h2>
+        <p>First to reach <span id="win-pt">42</span> points win the game</p>
+        <p>Current Round: <span id="current-round">42</span></p>
+        <p>Your Score: <span id="human-score">42</span></p>
+        <p>Computer’s Score: <span id="computer-score">42</span></p>
+      </div>
+      <div class="rounds">
+        <h2>Round Results</h2>
+        <ol></ol>
       </div>
     </section>
   </body>
