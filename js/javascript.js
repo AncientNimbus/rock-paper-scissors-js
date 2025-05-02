@@ -1,5 +1,13 @@
 // Rock Paper Scissors v1.1 Browser Edition
 
+// Get elements from the html page
+const controls = document.querySelector(".controls");
+const winElem = document.querySelector("#win-pt");
+const winnerElem = document.querySelector("#winner");
+const roundList = document.querySelector(".rounds ol");
+let round = document.querySelector("#current-round");
+let humanScore = document.querySelector("#human-score");
+let computerScore = document.querySelector("#computer-score");
 /**
  * @type {["rock", "paper", "scissors"]}
  */
@@ -47,14 +55,6 @@ function playRound(humanChoice, computerChoice) {
   return userWon;
 }
 
-// Get elements from the html page
-const controls = document.querySelector(".controls");
-const winElem = document.querySelector("#win-pt");
-const roundList = document.querySelector(".rounds ol");
-let round = document.querySelector("#current-round");
-let humanScore = document.querySelector("#human-score");
-let computerScore = document.querySelector("#computer-score");
-
 function initGame(winPt) {
   // Set the points required to win the game
   winElem.textContent = winPt;
@@ -62,6 +62,8 @@ function initGame(winPt) {
   round.textContent = 0;
   humanScore.textContent = 0;
   computerScore.textContent = 0;
+
+  winnerElem.style.visibility = "hidden";
 }
 
 function validateResult(result) {
@@ -78,6 +80,10 @@ function validateResult(result) {
   }
 }
 
+/**
+ * @param {string} humanChoice
+ * @param {string} computerChoice
+ */
 function createRoundRecord(result, humanChoice, computerChoice) {
   const messages = {
     win: "You won this round.",
@@ -86,7 +92,7 @@ function createRoundRecord(result, humanChoice, computerChoice) {
   };
   const record = document.createElement("li");
 
-  record.textContent = `You draw ${humanChoice} and the Computer draws ${computerChoice}. ${messages[result]}`;
+  record.textContent = `You draw: ${humanChoice}, Computer draws: ${computerChoice}. ${messages[result]}`;
 
   roundList.appendChild(record);
 }
@@ -113,6 +119,13 @@ controls.addEventListener("click", (e) => {
     const buttons = controls.querySelectorAll(".action-btn");
     buttons.forEach((btn) => (btn.disabled = true));
     controls.disabled = true;
+
+    const winMsg =
+      humanScore.textContent == winPt
+        ? "Victory is yours-well played!"
+        : "You’ve been outsmarted by the machine.";
+    winnerElem.textContent = winMsg;
+    winnerElem.style.visibility = "visible";
   } else if (target.matches(".action-btn")) {
     result = playRound(humanChoice, computerChoice);
     createRoundRecord(validateResult(result), humanChoice, computerChoice);

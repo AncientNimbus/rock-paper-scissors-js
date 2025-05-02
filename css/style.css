@@ -1,6 +1,9 @@
 .rps-game {
+  background-color: antiquewhite;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 34px;
   border: solid rgb(0, 0, 0);
+  border-radius: 13px;
   display: flex;
   align-items: start;
   flex-direction: column;
@@ -26,6 +29,26 @@ h1 {
   gap: 2em;
 }
 
+.action-btn {
+  background-color: azure;
+  border-radius: 13px;
+  width: 120px;
+  height: 60px;
+}
+
 .scores p {
-  padding-left: 30px;
+  padding-left: 28px;
+}
+
+#winner {
+  font-size: 21px;
+  align-self: center;
+  text-align: center;
+}
+
+#win-pt,
+#current-round,
+#human-score,
+#computer-score {
+  font-weight: bold;
 }
