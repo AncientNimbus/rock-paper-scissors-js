@@ -116,4 +116,4 @@ function playGame(round) {
   printScore(humanScore, computerScore);
 }
 
-playGame(5);
+// playGame(5);
